@@ -24,7 +24,7 @@ sns.set_theme()
 signal.signal(signal.SIGINT, signal.SIG_DFL)  # Enable Ctrl-C on plot windows
 
 ACC_G = 9.81
-FPS = 10
+FPS = 1
 CONTROL_START_IDX = 100
 COST_END_IDX = 500
 CONTEXT_LENGTH = 20
@@ -103,19 +103,30 @@ class TinyPhysicsSimulator:
     self.controller = controller
     self.debug = debug
     self.reset()
-
+    
   def reset(self) -> None:
-    self.step_idx = CONTEXT_LENGTH
+    # set the step index of the sim object to 20
+    self.step_idx = CONTEXT_LENGTH 
+
+    # store target plans for the next 20 steps
     state_target_futureplans = [self.get_state_target_futureplan(i) for i in range(self.step_idx)]
+
+    # the current state is always going to be the first element in the future plan at any index, trivial
     self.state_history = [x[0] for x in state_target_futureplans]
+
+    # this is something accessed directly from the data.csv given: that too the first 20 values
     self.action_history = self.data['steer_command'].values[:self.step_idx].tolist()
+
+    # the second element in the state target future plans is the lat acc
     self.current_lataccel_history = [x[1] for x in state_target_futureplans]
     self.target_lataccel_history = [x[1] for x in state_target_futureplans]
+
     self.target_future = None
     self.current_lataccel = self.current_lataccel_history[-1]
     seed = int(md5(self.data_path.encode()).hexdigest(), 16) % 10**4
     np.random.seed(seed)
 
+  # function to access the data from the given data path and store it into self.data
   def get_data(self, data_path: str) -> pd.DataFrame:
     df = pd.read_csv(data_path)
     processed_df = pd.DataFrame({

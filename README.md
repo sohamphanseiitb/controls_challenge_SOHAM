@@ -50,9 +50,9 @@ Your controller should implement a new [controller](https://github.com/commaai/c
 
 ## Evaluation
 Each rollout will result in 2 costs:
-- `lataccel_cost`: $\dfrac{\Sigma(actual\\_lat\\_accel - target\\_lat\\_accel)^2}{steps} * 100$
+- `lataccel_cost`: $\dfrac{\Sigma(actual\_lat\_accel - target\_lat\_accel)^2}{steps} * 100$
 
-- `jerk_cost`: $\dfrac{\Sigma((actual\\_lat\\_accel\_t - actual\\_lat\\_accel\_{t-1}) / \Delta t)^2}{steps - 1} * 100$
+- `jerk_cost`: $\dfrac{\Sigma((actual\_lat\_accel_t - actual\_lat\_accel_{t-1}) / \Delta t)^2}{steps - 1} * 100$
 
 It is important to minimize both costs. `total_cost`: $(lataccel\\_cost * 50) + jerk\\_cost$
 
