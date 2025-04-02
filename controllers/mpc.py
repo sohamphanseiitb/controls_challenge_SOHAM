@@ -3,7 +3,7 @@ import numpy as np
 
 class Controller(BaseController):
   """
-  A simple PID controller
+  MPC controller
   """
   def __init__(self,):
     self.p = 0.3

@@ -12,11 +12,11 @@ class Controller(BaseController):
     self.error_integral = 0
     self.prev_error = 0
 
-  def update(self, target_lataccel, current_lataccel, state, future_plan):
-      print("state soham: ", state, "\n")
-      print("Current lat accceleration:", current_lataccel)
-      print("target soham: ", future_plan, "\n")
-      error = (target_lataccel - current_lataccel)
+# earlier we only used to get the latest values of target_lataccel and state
+## now we are getting the whole history, and step_idx, which tells us which one to use:
+  def update(self, target_lataccel, current_lataccel, state, step_idx, future_plan):
+      
+      error = (target_lataccel[step_idx] - current_lataccel)
       self.error_integral += error
       error_diff = error - self.prev_error
       self.prev_error = error
